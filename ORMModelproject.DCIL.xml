@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dcl:schema name="ORMModel1" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
+	<dcl:domain name="EmployeeID">
+		<dcl:predefinedDataType name="INTEGER" />
+		<dcl:checkConstraint name="EmployeeID_Unsigned_Chk">
+			<dep:comparisonPredicate operator="greaterThanOrEquals">
+				<dep:valueKeyword />
+				<ddt:exactNumericLiteral value="0" />
+			</dep:comparisonPredicate>
+		</dcl:checkConstraint>
+	</dcl:domain>
+	<dcl:domain name="PublisherId">
+		<dcl:predefinedDataType name="INTEGER" />
+		<dcl:checkConstraint name="PublisherId_Unsigned_Chk">
+			<dep:comparisonPredicate operator="greaterThanOrEquals">
+				<dep:valueKeyword />
+				<ddt:exactNumericLiteral value="0" />
+			</dep:comparisonPredicate>
+		</dcl:checkConstraint>
+	</dcl:domain>
+	<dcl:table name="Library">
+		<dcl:column name="libraryName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="address" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="50" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Library_PK" isPrimary="true">
+			<dcl:columnRef name="libraryName" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="Library_UC" isPrimary="false">
+			<dcl:columnRef name="address" />
+		</dcl:uniquenessConstraint>
+	</dcl:table>
+	<dcl:table name="Librarian">
+		<dcl:column name="librarianName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="employeeID" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="EmployeeID" />
+		</dcl:column>
+		<dcl:column name="libraryName" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Librarian_PK" isPrimary="true">
+			<dcl:columnRef name="librarianName" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="Librarian_UC" isPrimary="false">
+			<dcl:columnRef name="employeeID" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="Librarian_FK" targetTable="Library">
+			<dcl:columnRef sourceName="libraryName" targetName="libraryName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="Books">
+		<dcl:column name="booksName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="publisherName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Books_PK" isPrimary="true">
+			<dcl:columnRef name="booksName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="Books_FK" targetTable="Publisher">
+			<dcl:columnRef sourceName="publisherName" targetName="publisherName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="Borrower">
+		<dcl:column name="borrowerId" isNullable="false" isIdentity="true">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="name" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Borrower_PK" isPrimary="true">
+			<dcl:columnRef name="borrowerId" />
+		</dcl:uniquenessConstraint>
+	</dcl:table>
+	<dcl:table name="Author">
+		<dcl:column name="authorName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Author_PK" isPrimary="true">
+			<dcl:columnRef name="authorName" />
+		</dcl:uniquenessConstraint>
+	</dcl:table>
+	<dcl:table name="Publisher">
+		<dcl:column name="publisherName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="publisherId" isNullable="false" isIdentity="false">
+			<dcl:domainRef name="PublisherId" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Publisher_PK" isPrimary="true">
+			<dcl:columnRef name="publisherName" />
+		</dcl:uniquenessConstraint>
+		<dcl:uniquenessConstraint name="Publisher_UC" isPrimary="false">
+			<dcl:columnRef name="publisherId" />
+		</dcl:uniquenessConstraint>
+	</dcl:table>
+	<dcl:table name="BorrowerBorrowsBooksOnDate">
+		<dcl:column name="booksName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="borrowerId" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="dateYmd" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="BorrowerBorrowsBooksOnDate_PK" isPrimary="true">
+			<dcl:columnRef name="booksName" />
+			<dcl:columnRef name="borrowerId" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="BorrowerBorrowsBooksOnDate_FK1" targetTable="Borrower">
+			<dcl:columnRef sourceName="borrowerId" targetName="borrowerId" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="BorrowerBorrowsBooksOnDate_FK2" targetTable="Books">
+			<dcl:columnRef sourceName="booksName" targetName="booksName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="BorrowerReturnsBooksOnDate">
+		<dcl:column name="booksName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="borrowerId" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="dateYmd" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DATE" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="BorrowerReturnsBooksOnDate_PK" isPrimary="true">
+			<dcl:columnRef name="borrowerId" />
+			<dcl:columnRef name="booksName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="BorrowerReturnsBooksOnDate_FK1" targetTable="Borrower">
+			<dcl:columnRef sourceName="borrowerId" targetName="borrowerId" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="BorrowerReturnsBooksOnDate_FK2" targetTable="Books">
+			<dcl:columnRef sourceName="booksName" targetName="booksName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="&quot;Member&quot;" requestedName="Member">
+		<dcl:column name="memberId" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Member_PK" isPrimary="true">
+			<dcl:columnRef name="memberId" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="Member_FK" targetTable="Borrower">
+			<dcl:columnRef sourceName="memberId" targetName="borrowerId" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="NonMember">
+		<dcl:column name="nonMemberId" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="NonMember_PK" isPrimary="true">
+			<dcl:columnRef name="nonMemberId" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="NonMember_FK" targetTable="Borrower">
+			<dcl:columnRef sourceName="nonMemberId" targetName="borrowerId" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="Fiction">
+		<dcl:column name="fictionName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="Fiction_PK" isPrimary="true">
+			<dcl:columnRef name="fictionName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="Fiction_FK" targetTable="Books">
+			<dcl:columnRef sourceName="fictionName" targetName="booksName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="NonFiction">
+		<dcl:column name="nonFictionName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="NonFiction_PK" isPrimary="true">
+			<dcl:columnRef name="nonFictionName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="NonFiction_FK" targetTable="Books">
+			<dcl:columnRef sourceName="nonFictionName" targetName="booksName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="MaleAuthor">
+		<dcl:column name="maleAuthorName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="MaleAuthor_PK" isPrimary="true">
+			<dcl:columnRef name="maleAuthorName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="MaleAuthor_FK" targetTable="Author">
+			<dcl:columnRef sourceName="maleAuthorName" targetName="authorName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="FemaleAuthor">
+		<dcl:column name="femaleAuthorName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="FemaleAuthor_PK" isPrimary="true">
+			<dcl:columnRef name="femaleAuthorName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="FemaleAuthor_FK" targetTable="Author">
+			<dcl:columnRef sourceName="femaleAuthorName" targetName="authorName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="LibraryLendsToBorrower">
+		<dcl:column name="borrowerId" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="INTEGER" />
+		</dcl:column>
+		<dcl:column name="libraryName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="LibraryLendsToBorrower_PK" isPrimary="true">
+			<dcl:columnRef name="libraryName" />
+			<dcl:columnRef name="borrowerId" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="LibraryLendsToBorrower_FK1" targetTable="Library">
+			<dcl:columnRef sourceName="libraryName" targetName="libraryName" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="LibraryLendsToBorrower_FK2" targetTable="Borrower">
+			<dcl:columnRef sourceName="borrowerId" targetName="borrowerId" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="LibraryHasBooks">
+		<dcl:column name="booksName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="libraryName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="LibraryHasBooks_PK" isPrimary="true">
+			<dcl:columnRef name="libraryName" />
+			<dcl:columnRef name="booksName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="LibraryHasBooks_FK1" targetTable="Library">
+			<dcl:columnRef sourceName="libraryName" targetName="libraryName" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="LibraryHasBooks_FK2" targetTable="Books">
+			<dcl:columnRef sourceName="booksName" targetName="booksName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="BooksIsAuthoredByAuthor">
+		<dcl:column name="authorName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:column name="booksName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="BooksIsAuthoredByAuthor_PK" isPrimary="true">
+			<dcl:columnRef name="authorName" />
+			<dcl:columnRef name="booksName" />
+		</dcl:uniquenessConstraint>
+		<dcl:referenceConstraint name="BooksIsAuthoredByAuthor_FK1" targetTable="Books">
+			<dcl:columnRef sourceName="booksName" targetName="booksName" />
+		</dcl:referenceConstraint>
+		<dcl:referenceConstraint name="BooksIsAuthoredByAuthor_FK2" targetTable="Author">
+			<dcl:columnRef sourceName="authorName" targetName="authorName" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+</dcl:schema>

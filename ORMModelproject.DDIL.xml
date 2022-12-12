@@ -1,0 +1,535 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dil:root xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dms="http://schemas.orm.net/DIL/DILMS" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:ddl="http://schemas.orm.net/DIL/DDIL">
+	<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE" />
+	<ddl:schemaDefinition schemaName="ORMModel1" defaultCharacterSet="UTF8" />
+	<dms:setSchemaStatement>
+		<ddt:characterStringLiteral value="ORMMODEL1" />
+	</dms:setSchemaStatement>
+	<ddl:domainDefinition name="EmployeeID" schema="ORMModel1">
+		<ddt:exactNumeric type="INTEGER" />
+		<ddl:domainConstraintDefinition name="EmployeeID_Unsigned_Chk">
+			<ddl:checkConstraintDefinition>
+				<dep:comparisonPredicate operator="greaterThanOrEquals">
+					<dep:valueKeyword />
+					<ddt:exactNumericLiteral value="0" />
+				</dep:comparisonPredicate>
+			</ddl:checkConstraintDefinition>
+		</ddl:domainConstraintDefinition>
+	</ddl:domainDefinition>
+	<ddl:domainDefinition name="PublisherId" schema="ORMModel1">
+		<ddt:exactNumeric type="INTEGER" />
+		<ddl:domainConstraintDefinition name="PublisherId_Unsigned_Chk">
+			<ddl:checkConstraintDefinition>
+				<dep:comparisonPredicate operator="greaterThanOrEquals">
+					<dep:valueKeyword />
+					<ddt:exactNumericLiteral value="0" />
+				</dep:comparisonPredicate>
+			</ddl:checkConstraintDefinition>
+		</ddl:domainConstraintDefinition>
+	</ddl:domainDefinition>
+	<ddl:tableDefinition name="Library" schema="ORMModel1">
+		<ddl:columnDefinition name="libraryName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="address">
+			<ddt:characterString type="CHARACTER VARYING" length="50" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Library_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="libraryName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition name="Library_UC">
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<dep:simpleColumnReference name="address" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="Librarian" schema="ORMModel1">
+		<ddl:columnDefinition name="librarianName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="employeeID">
+			<ddt:domain name="EmployeeID" schema="ORMModel1" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="libraryName">
+			<ddt:characterString type="CHARACTER VARYING" />
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Librarian_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="librarianName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition name="Librarian_UC">
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<dep:simpleColumnReference name="employeeID" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="Books" schema="ORMModel1">
+		<ddl:columnDefinition name="booksName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="publisherName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Books_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="booksName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="Borrower" schema="ORMModel1">
+		<ddl:columnDefinition name="borrowerId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:identityColumnSpecification type="ALWAYS">
+				<ddl:sequenceGeneratorStartWithOption>
+					<ddt:exactNumericLiteral value="1" />
+				</ddl:sequenceGeneratorStartWithOption>
+				<ddl:sequenceGeneratorIncrementByOption>
+					<ddt:exactNumericLiteral value="1" />
+				</ddl:sequenceGeneratorIncrementByOption>
+			</ddl:identityColumnSpecification>
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="name">
+			<ddt:characterString type="CHARACTER VARYING" length="20" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Borrower_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="borrowerId" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="Author" schema="ORMModel1">
+		<ddl:columnDefinition name="authorName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Author_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="authorName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="Publisher" schema="ORMModel1">
+		<ddl:columnDefinition name="publisherName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="publisherId">
+			<ddt:domain name="PublisherId" schema="ORMModel1" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Publisher_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="publisherName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition name="Publisher_UC">
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<dep:simpleColumnReference name="publisherId" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="BorrowerBorrowsBooksOnDate" schema="ORMModel1">
+		<ddl:columnDefinition name="booksName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="borrowerId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="dateYmd">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="BorrowerBorrowsBooksOnDate_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="booksName" />
+				<dep:simpleColumnReference name="borrowerId" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="BorrowerReturnsBooksOnDate" schema="ORMModel1">
+		<ddl:columnDefinition name="booksName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="borrowerId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="dateYmd">
+			<ddt:date type="DATE" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="BorrowerReturnsBooksOnDate_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="borrowerId" />
+				<dep:simpleColumnReference name="booksName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="&quot;Member&quot;" schema="ORMModel1">
+		<ddl:columnDefinition name="memberId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Member_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="memberId" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="NonMember" schema="ORMModel1">
+		<ddl:columnDefinition name="nonMemberId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="NonMember_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="nonMemberId" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="Fiction" schema="ORMModel1">
+		<ddl:columnDefinition name="fictionName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="Fiction_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="fictionName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="NonFiction" schema="ORMModel1">
+		<ddl:columnDefinition name="nonFictionName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="NonFiction_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="nonFictionName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="MaleAuthor" schema="ORMModel1">
+		<ddl:columnDefinition name="maleAuthorName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="MaleAuthor_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="maleAuthorName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="FemaleAuthor" schema="ORMModel1">
+		<ddl:columnDefinition name="femaleAuthorName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="FemaleAuthor_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="femaleAuthorName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="LibraryLendsToBorrower" schema="ORMModel1">
+		<ddl:columnDefinition name="borrowerId">
+			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="libraryName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="LibraryLendsToBorrower_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="libraryName" />
+				<dep:simpleColumnReference name="borrowerId" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="LibraryHasBooks" schema="ORMModel1">
+		<ddl:columnDefinition name="booksName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="libraryName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="LibraryHasBooks_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="libraryName" />
+				<dep:simpleColumnReference name="booksName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:tableDefinition name="BooksIsAuthoredByAuthor" schema="ORMModel1">
+		<ddl:columnDefinition name="authorName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="booksName">
+			<ddt:characterString type="CHARACTER VARYING" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:tableConstraintDefinition name="BooksIsAuthoredByAuthor_PK">
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<dep:simpleColumnReference name="authorName" />
+				<dep:simpleColumnReference name="booksName" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+	<ddl:alterTableStatement name="Librarian" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="Librarian_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="libraryName" />
+				<ddl:referencesSpecification name="Library" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="libraryName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="Books" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="Books_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="publisherName" />
+				<ddl:referencesSpecification name="Publisher" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="publisherName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BorrowerBorrowsBooksOnDate" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="BorrowerBorrowsBooksOnDate_FK1">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="borrowerId" />
+				<ddl:referencesSpecification name="Borrower" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="borrowerId" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BorrowerBorrowsBooksOnDate" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="BorrowerBorrowsBooksOnDate_FK2">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="booksName" />
+				<ddl:referencesSpecification name="Books" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="booksName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BorrowerReturnsBooksOnDate" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="BorrowerReturnsBooksOnDate_FK1">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="borrowerId" />
+				<ddl:referencesSpecification name="Borrower" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="borrowerId" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BorrowerReturnsBooksOnDate" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="BorrowerReturnsBooksOnDate_FK2">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="booksName" />
+				<ddl:referencesSpecification name="Books" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="booksName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="&quot;Member&quot;" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="Member_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="memberId" />
+				<ddl:referencesSpecification name="Borrower" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="borrowerId" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="NonMember" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="NonMember_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="nonMemberId" />
+				<ddl:referencesSpecification name="Borrower" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="borrowerId" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="Fiction" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="Fiction_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="fictionName" />
+				<ddl:referencesSpecification name="Books" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="booksName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="NonFiction" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="NonFiction_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="nonFictionName" />
+				<ddl:referencesSpecification name="Books" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="booksName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="MaleAuthor" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="MaleAuthor_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="maleAuthorName" />
+				<ddl:referencesSpecification name="Author" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="authorName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="FemaleAuthor" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="FemaleAuthor_FK">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="femaleAuthorName" />
+				<ddl:referencesSpecification name="Author" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="authorName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="LibraryLendsToBorrower" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="LibraryLendsToBorrower_FK1">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="libraryName" />
+				<ddl:referencesSpecification name="Library" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="libraryName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="LibraryLendsToBorrower" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="LibraryLendsToBorrower_FK2">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="borrowerId" />
+				<ddl:referencesSpecification name="Borrower" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="borrowerId" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="LibraryHasBooks" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="LibraryHasBooks_FK1">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="libraryName" />
+				<ddl:referencesSpecification name="Library" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="libraryName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="LibraryHasBooks" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="LibraryHasBooks_FK2">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="booksName" />
+				<ddl:referencesSpecification name="Books" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="booksName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BooksIsAuthoredByAuthor" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="BooksIsAuthoredByAuthor_FK1">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="booksName" />
+				<ddl:referencesSpecification name="Books" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="booksName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<ddl:alterTableStatement name="BooksIsAuthoredByAuthor" schema="ORMModel1">
+		<ddl:addTableConstraintDefinition name="BooksIsAuthoredByAuthor_FK2">
+			<ddl:referentialConstraintDefinition>
+				<dep:simpleColumnReference name="authorName" />
+				<ddl:referencesSpecification name="Author" onDelete="RESTRICT" onUpdate="RESTRICT" schema="ORMModel1">
+					<dep:simpleColumnReference name="authorName" />
+				</ddl:referencesSpecification>
+			</ddl:referentialConstraintDefinition>
+		</ddl:addTableConstraintDefinition>
+	</ddl:alterTableStatement>
+	<dms:commitStatement />
+</dil:root>

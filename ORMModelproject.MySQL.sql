@@ -1,0 +1,154 @@
+﻿
+CREATE TABLE Library
+(
+	libraryName VARCHAR(16383) NOT NULL,
+	address VARCHAR(50) NOT NULL,
+	CONSTRAINT Library_PK PRIMARY KEY(libraryName),
+	CONSTRAINT Library_UC UNIQUE(address)
+);
+
+CREATE TABLE Librarian
+(
+	librarianName VARCHAR(16383) NOT NULL,
+	employeeID INT NOT NULL,
+	libraryName VARCHAR(16383),
+	CONSTRAINT Librarian_PK PRIMARY KEY(librarianName),
+	CONSTRAINT Librarian_UC UNIQUE(employeeID)
+);
+
+CREATE TABLE Books
+(
+	booksName VARCHAR(16383) NOT NULL,
+	publisherName VARCHAR(16383) NOT NULL,
+	CONSTRAINT Books_PK PRIMARY KEY(booksName)
+);
+
+CREATE TABLE Borrower
+(
+	borrowerId INT AUTO_INCREMENT NOT NULL,
+	name VARCHAR(20) NOT NULL,
+	CONSTRAINT Borrower_PK PRIMARY KEY(borrowerId)
+);
+
+CREATE TABLE Author
+(
+	authorName VARCHAR(16383) NOT NULL,
+	CONSTRAINT Author_PK PRIMARY KEY(authorName)
+);
+
+CREATE TABLE Publisher
+(
+	publisherName VARCHAR(16383) NOT NULL,
+	publisherId INT NOT NULL,
+	CONSTRAINT Publisher_PK PRIMARY KEY(publisherName),
+	CONSTRAINT Publisher_UC UNIQUE(publisherId)
+);
+
+CREATE TABLE BorrowerBorrowsBooksOnDate
+(
+	booksName VARCHAR(16383) NOT NULL,
+	borrowerId INT NOT NULL,
+	dateYmd DATE NOT NULL,
+	CONSTRAINT BorrowerBorrowsBooksOnDate_PK PRIMARY KEY(booksName, borrowerId)
+);
+
+CREATE TABLE BorrowerReturnsBooksOnDate
+(
+	booksName VARCHAR(16383) NOT NULL,
+	borrowerId INT NOT NULL,
+	dateYmd DATE NOT NULL,
+	CONSTRAINT BorrowerReturnsBooksOnDate_PK PRIMARY KEY(borrowerId, booksName)
+);
+
+CREATE TABLE `Member`
+(
+	memberId INT NOT NULL,
+	CONSTRAINT Member_PK PRIMARY KEY(memberId)
+);
+
+CREATE TABLE NonMember
+(
+	nonMemberId INT NOT NULL,
+	CONSTRAINT NonMember_PK PRIMARY KEY(nonMemberId)
+);
+
+CREATE TABLE Fiction
+(
+	fictionName VARCHAR(16383) NOT NULL,
+	CONSTRAINT Fiction_PK PRIMARY KEY(fictionName)
+);
+
+CREATE TABLE NonFiction
+(
+	nonFictionName VARCHAR(16383) NOT NULL,
+	CONSTRAINT NonFiction_PK PRIMARY KEY(nonFictionName)
+);
+
+CREATE TABLE MaleAuthor
+(
+	maleAuthorName VARCHAR(16383) NOT NULL,
+	CONSTRAINT MaleAuthor_PK PRIMARY KEY(maleAuthorName)
+);
+
+CREATE TABLE FemaleAuthor
+(
+	femaleAuthorName VARCHAR(16383) NOT NULL,
+	CONSTRAINT FemaleAuthor_PK PRIMARY KEY(femaleAuthorName)
+);
+
+CREATE TABLE LibraryLendsToBorrower
+(
+	borrowerId INT NOT NULL,
+	libraryName VARCHAR(16383) NOT NULL,
+	CONSTRAINT LibraryLendsToBorrower_PK PRIMARY KEY(libraryName, borrowerId)
+);
+
+CREATE TABLE LibraryHasBooks
+(
+	booksName VARCHAR(16383) NOT NULL,
+	libraryName VARCHAR(16383) NOT NULL,
+	CONSTRAINT LibraryHasBooks_PK PRIMARY KEY(libraryName, booksName)
+);
+
+CREATE TABLE BooksIsAuthoredByAuthor
+(
+	authorName VARCHAR(16383) NOT NULL,
+	booksName VARCHAR(16383) NOT NULL,
+	CONSTRAINT BooksIsAuthoredByAuthor_PK PRIMARY KEY(authorName, booksName)
+);
+
+ALTER TABLE Librarian ADD CONSTRAINT Librarian_FK FOREIGN KEY (libraryName) REFERENCES Library (libraryName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE Books ADD CONSTRAINT Books_FK FOREIGN KEY (publisherName) REFERENCES Publisher (publisherName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE BorrowerBorrowsBooksOnDate ADD CONSTRAINT BorrowerBorrowsBooksOnDate_FK1 FOREIGN KEY (borrowerId) REFERENCES Borrower (borrowerId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE BorrowerBorrowsBooksOnDate ADD CONSTRAINT BorrowerBorrowsBooksOnDate_FK2 FOREIGN KEY (booksName) REFERENCES Books (booksName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE BorrowerReturnsBooksOnDate ADD CONSTRAINT BorrowerReturnsBooksOnDate_FK1 FOREIGN KEY (borrowerId) REFERENCES Borrower (borrowerId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE BorrowerReturnsBooksOnDate ADD CONSTRAINT BorrowerReturnsBooksOnDate_FK2 FOREIGN KEY (booksName) REFERENCES Books (booksName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE `Member` ADD CONSTRAINT Member_FK FOREIGN KEY (memberId) REFERENCES Borrower (borrowerId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE NonMember ADD CONSTRAINT NonMember_FK FOREIGN KEY (nonMemberId) REFERENCES Borrower (borrowerId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE Fiction ADD CONSTRAINT Fiction_FK FOREIGN KEY (fictionName) REFERENCES Books (booksName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE NonFiction ADD CONSTRAINT NonFiction_FK FOREIGN KEY (nonFictionName) REFERENCES Books (booksName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE MaleAuthor ADD CONSTRAINT MaleAuthor_FK FOREIGN KEY (maleAuthorName) REFERENCES Author (authorName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE FemaleAuthor ADD CONSTRAINT FemaleAuthor_FK FOREIGN KEY (femaleAuthorName) REFERENCES Author (authorName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE LibraryLendsToBorrower ADD CONSTRAINT LibraryLendsToBorrower_FK1 FOREIGN KEY (libraryName) REFERENCES Library (libraryName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE LibraryLendsToBorrower ADD CONSTRAINT LibraryLendsToBorrower_FK2 FOREIGN KEY (borrowerId) REFERENCES Borrower (borrowerId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE LibraryHasBooks ADD CONSTRAINT LibraryHasBooks_FK1 FOREIGN KEY (libraryName) REFERENCES Library (libraryName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE LibraryHasBooks ADD CONSTRAINT LibraryHasBooks_FK2 FOREIGN KEY (booksName) REFERENCES Books (booksName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE BooksIsAuthoredByAuthor ADD CONSTRAINT BooksIsAuthoredByAuthor_FK1 FOREIGN KEY (booksName) REFERENCES Books (booksName) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE BooksIsAuthoredByAuthor ADD CONSTRAINT BooksIsAuthoredByAuthor_FK2 FOREIGN KEY (authorName) REFERENCES Author (authorName) ON DELETE RESTRICT ON UPDATE RESTRICT;
